@@ -21,10 +21,14 @@
 
      //1_post
      router.post('/usuario', async (req, res) => {
-        const {nombre, balance} = req.body;
-        const user = [nombre, balance];
-        const result = await agregarUser(user);
-        res.json(result)
+        try {
+                    const { nombre, balance } = req.body;
+                    const datos = [nombre, balance];
+                    const result = await agregarUser(datos);
+                    res.send(result.rows);
+        } catch (error) {
+            res.status(500).send(error.message)
+        }
      })
 
      //2.ver
@@ -43,4 +47,4 @@
      export default router;
 
 
-     
+     /// creamos controllers, para enviar alla las queries
