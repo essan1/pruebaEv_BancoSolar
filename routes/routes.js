@@ -1,6 +1,13 @@
     import express, { Router } from 'express';
      import path from 'path'
-     import { agregarUser, verUsers }  from "../queries/queries.js"
+     import {
+       agregarUser,
+       verUsers,
+       editaruser,
+       eliminarUser,
+       agregarTransfer,
+       verTransfers,
+     } from "../queries/queries.js";
      const router = express.Router();
      const __dirname = import.meta.dirname
      
