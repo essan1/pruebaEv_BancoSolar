@@ -30,6 +30,8 @@ const verUsers = async () => {
     }
 }
 
+//3__ delete
+
 export {
     agregarUser,
     verUsers
