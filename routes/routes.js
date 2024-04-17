@@ -66,24 +66,30 @@
      })
 
 
+       //4. transferencia ahcer
+     router.post('/transferencias', async(req, res) => {
+        try {
+             const datos = req.body;
+             console.log(datos);
+
+             const result = await agregarTransfer(datos);
+             res.status(200).send(result);
+        } catch (error) {
+            console.log(error.message);
+        }
+     })
+
+
      //5. transferencia ver
      router.get('/transferencias', async(req, res) => {
         try {
-            
+            const result = await verTransfers();
+            res.status(200).json(result);
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
         }
      })
      
-
-     //5. transferencia ahcer
-     router.post('/transferencias', async(req, res) => {
-        try {
-            
-        } catch (error) {
-            console.log(error);
-        }
-     })
      
      //creamos nuestra ruta generica, simeprea al final
      router.get('*', (req, res) => {
@@ -92,6 +98,3 @@
      })
      
      export default router;
-
-
-     /// creamos controllers, para enviar alla las queries

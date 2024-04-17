@@ -194,7 +194,7 @@
   };
 
   const editUsuario = async (id) => {
-    const nombre = $("#nombreEdit").val();
+    const name = $("#nombreEdit").val();
     const balance = $("#balanceEdit").val();
     try {
       const { data } = await axios.put(
@@ -243,6 +243,7 @@
     }
     try {
       const response = await fetch("http://localhost:3000/transferencia", {
+        headers:{ "Content-Type": "application/json" },
         method: "post",
         body: JSON.stringify({
           emisor,
