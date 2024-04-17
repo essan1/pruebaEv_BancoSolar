@@ -1,8 +1,6 @@
-import express, { Router } from 'express';
+    import express, { Router } from 'express';
      import path from 'path'
-     
-     //import { 'queries' }  from '../queries'
-     
+     import { agregarUser, verUsers }  from "../queries/queries.js"
      const router = express.Router();
      const __dirname = import.meta.dirname
      
@@ -11,6 +9,21 @@ import express, { Router } from 'express';
      
      router.get('/', (req, res) => {
          res.sendFile(path.join(__dirname, '../views/index.html'))
+     })
+
+
+     //1_post
+     router.post('/usuario', async (req, res) => {
+        const {nombre, balance} = req.body;
+        const user = [nombre, balance];
+        const result = await agregarUser(user);
+        res.json(result)
+     })
+
+     //2.ver
+     router.get('/usuarios', async (req, res) => {
+        const mostrarUsers = await verUsers();
+        res.json(mostrarUsers)
      })
      
      
