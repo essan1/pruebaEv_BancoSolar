@@ -3,7 +3,7 @@
      import {
        agregarUser,
        verUsers,
-       editaruser,
+       editarUser,
        eliminarUser,
        agregarTransfer,
        verTransfers,
@@ -33,10 +33,57 @@
 
      //2.ver
      router.get('/usuarios', async (req, res) => {
-        const mostrarUsers = await verUsers();
-        res.json(mostrarUsers)
+        try {
+                const mostrarUsers = await verUsers();
+                res.json(mostrarUsers);
+        } catch (error) {
+            res.send(error)
+        }
+     })
+
+     //3. Editar
+     router.put('/usuario', async (req, res) => {
+        try {
+            const {id} = req.query
+            const {nombre, balance} = req.body
+
+            const result = await editarUser(nombre, balance, id);
+            res.send(result)
+        } catch (error) {
+            res.send(error)
+        }
+     })
+
+     //4. delete
+     router.delete('/usuario', async (req, res) => {
+        try {
+            const {id} = req.query;
+            const result = await eliminarUser(id);
+            res.send(result)
+        } catch (error) {
+            console.log(error.message);
+        }
+     })
+
+
+     //5. transferencia ver
+     router.get('/transferencias', async(req, res) => {
+        try {
+            
+        } catch (error) {
+            console.log(error);
+        }
      })
      
+
+     //5. transferencia ahcer
+     router.post('/transferencias', async(req, res) => {
+        try {
+            
+        } catch (error) {
+            console.log(error);
+        }
+     })
      
      //creamos nuestra ruta generica, simeprea al final
      router.get('*', (req, res) => {

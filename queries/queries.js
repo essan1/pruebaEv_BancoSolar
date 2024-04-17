@@ -31,15 +31,16 @@ const verUsers = async () => {
 
 //3__ editar
 
-const editaruser = async(datos) => {
+const editarUser = async(nombre, balance, id) => {
     try {
         const query = {
-            text: "update usuarios set nombre = $1, balance = $2 where id = $3",
-            values: datos,
+            text: "update usuarios set nombre = $1, balance = $2 where id = $3 returning *",
+            values: [nombre, balance, id],
         };
         const result = await db.query(query);
+        //validamos el que el cambio se haya ejecutado correctamente
         if (result.rowCount === 0 ){
-            throw new Error('no se encontro el user');
+            throw new Error('no se edito el user');
         } else {
             result.rows[0]
         }
@@ -53,13 +54,15 @@ const editaruser = async(datos) => {
 const eliminarUser = async(id) => {
     try {
         const query = {
-            text: "delete from usuarios where id = $1",
+            text: "delete from usuarios where id = $1 returning *",
             values: [id]
         }
         const result = await db.query(query);
         if (result.rowCount === 0) {
-            throw new Error('no se encontro el user');
-        }
+            throw new Error('no se elimino el user');
+        } else {
+            result.rows[0]
+        } return result.rows[0]
     } catch (error) {
         console.log(error);
     }
@@ -130,4 +133,11 @@ const agregarTransfer = async (datos) => {
 
 
 
-export { agregarUser, verUsers, editaruser, eliminarUser, agregarTransfer, verTransfers };
+export {
+  agregarUser,
+  verUsers,
+  editarUser,
+  eliminarUser,
+  agregarTransfer,
+  verTransfers,
+};

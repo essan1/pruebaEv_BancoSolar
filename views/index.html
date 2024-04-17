@@ -194,13 +194,13 @@
   };
 
   const editUsuario = async (id) => {
-    const name = $("#nombreEdit").val();
+    const nombre = $("#nombreEdit").val();
     const balance = $("#balanceEdit").val();
     try {
       const { data } = await axios.put(
         `http://localhost:3000/usuario?id=${id}`,
         {
-          name,
+          nombre,
           balance,
         }
       );
@@ -288,8 +288,10 @@
 
   const eliminarUsuario = async (id) => {
     const response = await fetch(`http://localhost:3000/usuario?id=${id}`, {
+      headers:{ "Content-Type": "application/json" },
       method: "DELETE",
     });
+    alert(`usuarios con id:  ${id} eliminado!`)
     getUsuarios();
   };
 
