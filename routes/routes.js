@@ -1,93 +1,43 @@
-    import express, { Router } from 'express';
-     import path from 'path'
-     import {
-       agregarUser,
-       verUsers,
-       editarUser,
-       eliminarUser,
-       agregarTransfer,
-       verTransfers
-     } from "../queries/queries.js";
+    import express from 'express';
 
-     import { verIndex } from '../controllers/userController.js';
+     import {
+       verIndex,
+       addUser,
+       getUsers,
+       updateUsers,
+       deleteUser,
+     } from "../controllers/userController.js";
+
+     import {
+       addTransfer,
+       getTransfers,
+     } from "../controllers/transferController.js";
+
      const router = express.Router();
-     const __dirname = import.meta.dirname
      
      
      //ruta principal
-     
      router.get("/", verIndex);
 
-
      //1_post
-     router.post('/usuario', async (req, res) => {
-        try {
-                    const { nombre, balance } = req.body;
-                    const datos = [nombre, balance];
-                    const result = await agregarUser(datos);
-                    res.send(result.rows);
-        } catch (error) {
-            res.status(500).send(error.message)
-        }
-     })
+     router.post('/usuario', addUser)
 
      //2.ver
-     router.get('/usuarios', async (req, res) => {
-        try {
-                const mostrarUsers = await verUsers();
-                res.json(mostrarUsers);
-        } catch (error) {
-            res.send(error)
-        }
-     })
+     router.get("/usuarios", getUsers);
 
      //3. Editar
-     router.put('/usuario', async (req, res) => {
-        try {
-            const {id} = req.query
-            const {nombre, balance} = req.body
-
-            const result = await editarUser(nombre, balance, id);
-            res.send(result)
-        } catch (error) {
-            res.send(error)
-        }
-     })
+     router.put("/usuario", updateUsers);
 
      //4. delete
-     router.delete('/usuario', async (req, res) => {
-        try {
-            const {id} = req.query;
-            const result = await eliminarUser(id);
-            res.send(result)
-        } catch (error) {
-            console.log(error.message);
-        }
-     })
+     router.delete("/usuario", deleteUser);
 
 
-       //4. transferencia ahcer
-     router.post('/transferencia', async(req, res) => {
-        try {
-             const {emisor, receptor, monto} = req.body;
-             const datos = [emisor, receptor, monto];
-             const result = await agregarTransfer(datos);
-             res.status(200).send(result);
-        } catch (error) {
-            console.log(error.message);
-        }
-     })
+    //5. transferencia ahcer
+     router.post("/transferencia", addTransfer);
 
 
-    //5. transferencia ver
-     router.get('/transferencias', async(req, res) => {
-        try {
-            const result = await verTransfers();
-            res.status(200).json(result);
-        } catch (error) {
-            console.log(error.message);
-        }
-     })
+    //6. transferencia ver
+     router.get("/transferencias", getTransfers);
      
      //creamos nuestra ruta generica, simeprea al final
      router.get('*', (req, res) => {
