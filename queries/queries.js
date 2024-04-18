@@ -13,7 +13,7 @@ const agregarUser = async (datos) => {
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
 //2_ ver 
 
@@ -27,7 +27,7 @@ const verUsers = async () => {
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
 //3__ editar
 
@@ -66,7 +66,7 @@ const eliminarUser = async(id) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 
 //agregar transfer 
@@ -122,8 +122,6 @@ const verTransfers = async () => {
     return error;
   }
 };
-
-
 
 
 export {

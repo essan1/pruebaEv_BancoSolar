@@ -8,15 +8,15 @@
        agregarTransfer,
        verTransfers
      } from "../queries/queries.js";
+
+     import { verIndex } from '../controllers/userController.js';
      const router = express.Router();
      const __dirname = import.meta.dirname
      
      
      //ruta principal
      
-     router.get('/', (req, res) => {
-         res.sendFile(path.join(__dirname, '../views/index.html'))
-     })
+     router.get("/", verIndex);
 
 
      //1_post
