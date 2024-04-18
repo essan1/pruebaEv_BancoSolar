@@ -39,7 +39,7 @@
     //6. transferencia ver
      router.get("/transferencias", getTransfers);
      
-     //creamos nuestra ruta generica, simeprea al final
+     //ruta generica
      router.get('*', (req, res) => {
          res.status(400);
          res.send('<h1><center>404 ERROR -- Pagina No Encontrada</center></h1>');
