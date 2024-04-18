@@ -71,37 +71,38 @@ const eliminarUser = async(id) => {
 
 //agregar transfer 
 const agregarTransfer = async (datos) => {
-  //buscamos el id del emisor
-  const { emisor, receptor, monto } = datos;
+  const [ emisor, receptor, monto ] = datos;
+
   const { id: emisorId } = (
-    await pool.query(`SELECT * FROM usuarios WHERE nombre = '${emisor}'`)
-  ).rows[0];
-  //buscamos el id del receptor
+    await db.query(`select * from usuarios where nombre = '${emisor}'`)).rows[0];
+    
   const { id: receptorId } = (
-    await pool.query(`SELECT * FROM usuarios WHERE nombre = '${receptor}'`)
-  ).rows[0];
+    await db.query(`select * from usuarios where nombre = '${receptor}'`)).rows[0];
+
   const registerTranfer = {
-    text: "INSERT INTO transferencias (emisor, receptor, monto, fecha) VALUES ($1, $2, $3, NOW()) RETURNING *",
+    text: "insert into transferencias (emisor, receptor, monto, fecha) VALUES ($1, $2, $3, NOW()) returning *",
     values: [emisorId, receptorId, monto],
   };
   const updateBalanceEmisor = {
-    text: "UPDATE usuarios SET balance = balance - $1 WHERE nombre = $2 RETURNING *",
+    text: "update usuarios SET balance = balance - $1 where nombre = $2 returning *",
     values: [monto, emisor],
   };
   const updateBalanceReceptor = {
-    text: "UPDATE usuarios SET balance = balance + $1 WHERE nombre = $2 RETURNING *",
+    text: "update usuarios SET balance = balance + $1 where nombre = $2 returning *",
     values: [monto, receptor],
   };
 
   try {
-    await pool.query("BEGIN");
-    await pool.query(registerTranfer);
-    await pool.query(updateBalanceEmisor);
-    await pool.query(updateBalanceReceptor);
-    await pool.query("COMMIT");
+    await db.query("BEGIN");
+    await db.query(updateBalanceEmisor);
+    await db.query(updateBalanceReceptor);
+    const result = await db.query(registerTranfer)
+    /* await db.query(registerTranfer); */
+    await db.query("COMMIT");
+    console.log(result.rows);
     return true;
   } catch (error) {
-    await pool.query("ROLLBACK");
+    await db.query("ROLLBACK");
     return error;
   }
 };
@@ -110,20 +111,11 @@ const agregarTransfer = async (datos) => {
 const verTransfers = async () => {
   try {
     const querys = {
-      text: `SELECT
-        e.nombre AS emisor,
-        r.nombre AS receptor,
-        t.monto,
-        t.fecha
-      FROM
-        transferencias t
-      JOIN
-        usuarios e ON t.emisor = e.id
-      JOIN
-        usuarios r ON t.receptor = r.id;`,
+      text: `SELECT e.nombre AS emisor, r.nombre AS receptor, t.monto, t.fecha
+      FROM transferencias t JOIN usuarios e ON t.emisor = e.id JOIN usuarios r ON t.receptor = r.id;`,
       rowMode: "array",
     };
-    const result = await pool.query(querys);
+    const result = await db.query(querys);
     console.log(result.rows);
     return result.rows;
   } catch (error) {
@@ -140,5 +132,5 @@ export {
   editarUser,
   eliminarUser,
   agregarTransfer,
-  verTransfers,
+  verTransfers
 };

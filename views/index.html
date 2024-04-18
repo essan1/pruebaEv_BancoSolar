@@ -10,6 +10,7 @@
       integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="./assets/css/style.css">
   </head>
   <body class="p-5">
     <h1 class="text-center" style="font-size: 60px">&#127979;</h1>
@@ -67,7 +68,7 @@
                 />
               </div>
 
-              <button type="submit" class="btn btn-danger">Relalizar</button>
+              <button type="submit" class="btn btn-danger">Realizar</button>
             </div>
           </div>
         </form>
@@ -175,17 +176,6 @@
   </body>
 </html>
 
-<style>
-  body {
-    background: #e5e1dd;
-  }
-  form {
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 10px;
-  }
-</style>
-
 <script>
   const setInfoModal = (nombre, balance, id) => {
     $("#nombreEdit").val(nombre);
@@ -194,7 +184,7 @@
   };
 
   const editUsuario = async (id) => {
-    const name = $("#nombreEdit").val();
+    const nombre = $("#nombreEdit").val();
     const balance = $("#balanceEdit").val();
     try {
       const { data } = await axios.put(
@@ -243,8 +233,8 @@
     }
     try {
       const response = await fetch("http://localhost:3000/transferencia", {
-        headers:{ "Content-Type": "application/json" },
         method: "post",
+        headers:{ "Content-Type": "application/json" },
         body: JSON.stringify({
           emisor,
           receptor,
@@ -292,7 +282,7 @@
       headers:{ "Content-Type": "application/json" },
       method: "DELETE",
     });
-    alert(`usuarios con id:  ${id} eliminado!`)
+    alert(`usuario con id: ${id} eliminado`)
     getUsuarios();
   };
 
@@ -303,10 +293,10 @@
     data.forEach((t) => {
       $(".transferencias").append(`
        <tr>
-         <td> ${formatDate(t[4])} </td>
+         <td> ${formatDate(t[3])} </td>
+         <td> ${t[0]} </td>
          <td> ${t[1]} </td>
          <td> ${t[2]} </td>
-         <td> ${t[3]} </td>
        </tr>
      `);
     });

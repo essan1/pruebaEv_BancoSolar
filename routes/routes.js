@@ -6,7 +6,7 @@
        editarUser,
        eliminarUser,
        agregarTransfer,
-       verTransfers,
+       verTransfers
      } from "../queries/queries.js";
      const router = express.Router();
      const __dirname = import.meta.dirname
@@ -67,11 +67,10 @@
 
 
        //4. transferencia ahcer
-     router.post('/transferencias', async(req, res) => {
+     router.post('/transferencia', async(req, res) => {
         try {
-             const datos = req.body;
-             console.log(datos);
-
+             const {emisor, receptor, monto} = req.body;
+             const datos = [emisor, receptor, monto];
              const result = await agregarTransfer(datos);
              res.status(200).send(result);
         } catch (error) {
@@ -80,7 +79,7 @@
      })
 
 
-     //5. transferencia ver
+    //5. transferencia ver
      router.get('/transferencias', async(req, res) => {
         try {
             const result = await verTransfers();
@@ -89,7 +88,6 @@
             console.log(error.message);
         }
      })
-     
      
      //creamos nuestra ruta generica, simeprea al final
      router.get('*', (req, res) => {
